@@ -80,7 +80,7 @@ def rank_airfields(ds: Dataset, points: list[Point], spawn_types: tuple[str, ...
     used: set[str] = set()      # airfield codes are unique among airfields; sharing a code with a CP is fine
     out: list[AirfieldPoint] = []
     scored = []
-    for a in (x for x in ds.airfields if x.kind in kinds and not airfield_excluded(x.name)):
+    for a in (x for x in ds.airfields if x.kind in kinds and not airfield_excluded(x.name, fixed_wing=True)):
         d = min((math.hypot(a.x - p.x, a.y - p.y) for p in points), default=0.0)
         spawn = any(t in a.slots for t in spawn_types)
         ahead = bool(objectives) and not any(is_behind(ds, o, a.x, a.y) for o in objectives)

@@ -5,5 +5,9 @@
     "^H_med_orig_[0-9]+$",
     "heliport|helipad|farp",
     "^New Static Object"
+  ],
+  "_comment_fixed_wing": "Helipads that DCS reports as airdromes (Germany: 'H FRG 40', 'H Med GDR 01', 'H Radar GDR 07'). Left out for fixed-wing aircraft only: helicopters still use them.",
+  "exclude_name_regex_fixed_wing": [
+    "^H[ _-]"
   ]
 }

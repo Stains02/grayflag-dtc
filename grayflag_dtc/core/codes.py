@@ -174,21 +174,22 @@ def airfield_code(name: str, cfg: CodeConfig) -> str:
     return base or "AFD"
 
 
-def airfield_excluded(name: str) -> bool:
-    """True for airfields that are really helipads/generated strips (config/airfield_filters.json)."""
-    pats = _airfield_patterns(str(RES))
+def airfield_excluded(name: str, fixed_wing: bool = False) -> bool:
+    """True for airfields that are really helipads/generated strips (config/airfield_filters.json). With `fixed_wing`,
+    also the helipads that helicopters can use (Germany's "H FRG 40")."""
+    pats = _airfield_patterns(str(RES), "exclude_name_regex") + (_airfield_patterns(str(RES), "exclude_name_regex_fixed_wing") if fixed_wing else ())
     return any(p.search(name) for p in pats)
 
 
-def _airfield_patterns(root: str):
+def _airfield_patterns(root: str, key: str = "exclude_name_regex"):
     from functools import lru_cache
 
     @lru_cache(maxsize=4)
-    def load(r: str):
+    def load(r: str, k: str):
         f = Path(r) / "config" / "airfield_filters.json"
-        raw = json.loads(f.read_text(encoding="utf-8")).get("exclude_name_regex", []) if f.exists() else []
+        raw = json.loads(f.read_text(encoding="utf-8")).get(k, []) if f.exists() else []
         return tuple(re.compile(x, re.I) for x in raw)
-    return load(root)
+    return load(root, key)
 
 
 def load_airfield_overrides(server_id: str) -> dict[str, str]:

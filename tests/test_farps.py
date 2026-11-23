@@ -410,3 +410,14 @@ def test_enemy_farps_on_caucasus_open_once_their_lattice_has_passed_them():
     red = {c.name: c.after for c in candidates(ds, ("AH-64D_BLK_II",)) if c.after}
     assert red["Apsheronsk FARP"] == ("A", 35) and red["Tuapse FARP"] == ("A", 31)       # the "Red " prefix is dropped
     assert not any("Static Invisible FARP-2" in n for n in red)                           # 30 nm from any objective: never opens
+
+
+def test_helipads_named_h_are_left_out_for_fixed_wing_but_kept_for_helicopters():
+    from grayflag_dtc.core.codes import airfield_excluded
+    from grayflag_dtc.core.dataset import load_one
+    from grayflag_dtc.core.selection import build_selection
+    for n in ("H FRG 40", "H GDR 13", "H Med GDR 01", "H Radar GDR 07"):
+        assert airfield_excluded(n, fixed_wing=True) and not airfield_excluded(n)
+    assert not airfield_excluded("Hamburg", fixed_wing=True) and not airfield_excluded("Hahn", fixed_wing=True)
+    sel = build_selection(load_one("germany"), ["A31"], capacity=25, labels=True, code_cfg=CodeConfig.load(), spawn_types=("F-16C_50",))
+    assert sel.airfields and not any(a.name.startswith("H ") for a in sel.airfields)

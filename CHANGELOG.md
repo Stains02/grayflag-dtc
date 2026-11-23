@@ -2,6 +2,10 @@
 
 Versions follow `vMAJOR.MINOR.PATCH`: new servers or aircraft bump the minor number, refreshed mission data or fixes the patch number. The version lives in `grayflag_dtc/__init__.py`; release tags must match it.
 
+## Unreleased
+
+- F-16 and F/A-18C no longer offer helipads that DCS reports as airfields (Germany's "H FRG 40", "H Med GDR 01"...). The Apache still uses them.
+
 ## 0.1.1 (2026-11-23)
 
 - App icon (a gray flag over a steerpoint marker): on the exe, in the browser tab and in the page header. `tools/make_icon.py` redraws it.
