@@ -1,0 +1,9 @@
+{
+  "_comment": "Airfields whose name matches any of these case-insensitive regexes are never offered to an airframe. Syria's map has ~140 generated hospital/stadium/oil helipads that DCS reports as airdromes.",
+  "exclude_name_regex": [
+    "^H[A-Za-z]{1,6}[0-9]{1,3}$",
+    "^H_med_orig_[0-9]+$",
+    "heliport|helipad|farp",
+    "^New Static Object"
+  ]
+}

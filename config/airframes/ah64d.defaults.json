@@ -1,0 +1,11 @@
+{
+  "Presets.COMM.0.COMMS.UHF.Frequency": 267.75,
+  "Presets.COMM.0.COMMS.VHF.Frequency": 129.4,
+  "Presets.COMM.0.COMMS.FM1.Frequency": 30,
+  "Presets.COMM.1.COMMS.UHF.Frequency": 231.8,
+  "Presets.COMM.1.COMMS.VHF.Frequency": 130.8,
+  "Laser.ChannelsCodes.A": "1636",
+  "Radios.InitialRadioSettings.VHF": 1,
+  "Radios.InitialRadioSettings.UHF": 1,
+  "Radios.InitialRadioSettings.FM1": 1
+}

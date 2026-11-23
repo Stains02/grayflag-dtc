@@ -1,0 +1,14 @@
+{
+  "id": "f16c",
+  "enabled": true,
+  "capacity": 25,
+  "label_max_len": 3,
+  "nav_slots": 25,
+  "dest_slots": 19,
+  "coordinates": "dcs_xy_m",
+  "altitude_unit": "m",
+  "template": "templates/dtc/f16c.dtc",
+  "dcs_dtc_subfolder": "",
+  "note_max_len": 24,
+  "sites_range_nm": 25
+}

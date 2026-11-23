@@ -1,0 +1,74 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y lua5.1
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+
+  exe:
+    runs-on: windows-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: pyinstaller --noconfirm --clean grayflag-dtc.spec
+      - name: Smoke test the exe
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath dist\grayflag-dtc.exe -ArgumentList '--data', "$env:RUNNER_TEMP\gf-data", 'serve', '--no-browser', '--port', '8801' -PassThru
+          $ok = $false
+          for ($i = 0; $i -lt 40 -and -not $ok; $i++) {
+            try { Invoke-RestMethod http://127.0.0.1:8801/healthz | Out-Null; $ok = $true } catch { Start-Sleep 1 }
+          }
+          if (-not $ok) { throw 'exe did not start' }
+          $base = 'http://127.0.0.1:8801'
+          # ConvertFrom-Json -NoEnumerate: in PowerShell 7 an array from Invoke-RestMethod can arrive wrapped as ONE object
+          $servers = (Invoke-WebRequest -UseBasicParsing "$base/api/servers").Content | ConvertFrom-Json -NoEnumerate
+          $airframes = (Invoke-WebRequest -UseBasicParsing "$base/api/airframes").Content | ConvertFrom-Json -NoEnumerate
+          $pv = Invoke-RestMethod -Method Post -Uri "$base/api/preview" -ContentType 'application/json' -Body (@{server = 'pg-redux'; airframe = 'f16c'; objectives = @('A16')} | ConvertTo-Json)
+          Stop-Process -Id $p.Id -Force
+          Write-Host "servers: $($servers.id -join ', ')"
+          Write-Host "airframes: $($airframes.id -join ', ')"
+          Write-Host "preview: $($pv.points.Count) points, $($pv.airfields.Count) airfields"
+          if ($servers.Count -lt 5) { throw "expected the 5 bundled scenarios, got $($servers.Count)" }
+          if ($airframes.Count -lt 3) { throw "expected the 3 airframe plugins inside the exe, got $($airframes.Count)" }
+          if ($pv.points.Count -lt 1 -or $pv.airfields.Count -lt 1) { throw 'preview returned nothing: the bundled data or templates are missing' }
+      - name: Check the tag matches the program version
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        run: |
+          $v = (python -c "import grayflag_dtc; print(grayflag_dtc.__version__)").Trim()
+          if ("v$v" -ne "${{ github.ref_name }}") { throw "tag ${{ github.ref_name }} does not match grayflag_dtc.__version__ = $v" }
+      - name: Name the exe after its version
+        shell: pwsh
+        run: |
+          $v = (python -c "import grayflag_dtc; print(grayflag_dtc.__version__)").Trim()
+          Copy-Item dist\grayflag-dtc.exe "dist\grayflag-dtc-v$v.exe"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: grayflag-dtc-windows
+          path: dist/grayflag-dtc-v*.exe
+      - name: Attach the exe to the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/grayflag-dtc-v*.exe
+          generate_release_notes: true
+    permissions:
+      contents: write

@@ -1,0 +1,5 @@
+{
+  "_comment": "Grayflag 'base' zones that are FARPs for helicopters. A base is skipped if its name matches any exclude pattern (enemy bases, fixed-wing bases, spawn points). It is kept if it has a FARP template or its name contains FARP/BASE.",
+  "exclude_name_regex": ["\\bred\\b", "fixed ?wing", "air ?base", "airport", "spawns?", "awacs", "\\bcas\\b", "late ?game"],
+  "keep_if_name_matches": "farp|\\bbase\\b"
+}

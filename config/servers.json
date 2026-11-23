@@ -1,0 +1,49 @@
+{
+  "servers": [
+    {
+      "id": "pg-redux",
+      "name": "Persian Gulf REDUX",
+      "tag": "PG",
+      "dataset": "theaters/pg-redux.json",
+      "enabled": true,
+      "harvest_config": {},
+      "source_track": "Grayflag Persian Gulf REDUX A-20261106-203124.trk"
+    },
+    {
+      "id": "syria-coin",
+      "name": "Syria COIN",
+      "tag": "SYR",
+      "dataset": "theaters/syria-coin.json",
+      "enabled": true,
+      "harvest_config": {},
+      "source_track": "Grayflag Syria COIN A-20260821-152359.trk"
+    },
+    {
+      "id": "caucasus",
+      "name": "Caucasus",
+      "tag": "CAU",
+      "dataset": "theaters/caucasus.json",
+      "enabled": true,
+      "harvest_config": {},
+      "source_track": "Grayflag Caucasus A-20261120-160531.trk"
+    },
+    {
+      "id": "germany",
+      "name": "Germany WIP_Modern",
+      "tag": "GER",
+      "dataset": "theaters/germany.json",
+      "enabled": true,
+      "harvest_config": {},
+      "source_track": "Grayflag Germany WIP_Modern A-20261120-160832.trk"
+    },
+    {
+      "id": "sinai",
+      "name": "Sinai",
+      "tag": "SIN",
+      "dataset": "theaters/sinai.json",
+      "enabled": true,
+      "harvest_config": {},
+      "source_track": "Grayflag_Sinai A-20261120-155835.trk"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grayflag DTC</title>
+<link rel="icon" type="image/png" href="/static/favicon.png">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1><img src="/static/icon.png" alt="" class="logo">Grayflag DTC</h1>
+  <div class="row">
+    <label>Server <select id="server"></select></label>
+    <label>Aircraft <select id="airframe"></select></label>
+    <label class="chk"><input type="checkbox" id="qrf"> QRF/supply bases</label>
+  </div>
+</header>
+<main>
+  <section id="pick">
+    <h2>Objectives</h2>
+    <input id="quick" type="text" placeholder="Quick entry: A16 B21 D31" autocomplete="off" autocapitalize="characters" spellcheck="false">
+    <div id="quickmsg" class="msg"></div>
+    <div id="lanes" class="seg"></div>
+    <div id="objectives"></div>
+  </section>
+  <aside id="side">
+    <section id="tray">
+      <h2>Selected <span id="counter"></span></h2>
+      <ul id="counts"></ul>
+      <ol id="trayList"></ol>
+      <div id="warn" class="msg"></div>
+      <div class="row">
+        <button id="send" class="primary" disabled>Send to DCS</button>
+        <button id="download">Download DTC</button>
+        <button id="clear" class="ghost">Clear</button>
+      </div>
+      <div id="result" class="msg"></div>
+    </section>
+    <section id="preview">
+      <h2>Preview</h2>
+      <div class="scroll"><table id="pv"><thead><tr><th>Slot</th><th>Obj</th><th>CP</th><th>Code</th><th>Ft</th></tr></thead><tbody></tbody></table></div>
+      <details id="stBox" hidden>
+        <summary id="stSum"></summary>
+        <div class="scroll"><table id="st"><thead><tr><th>Slot</th><th>Enemy base</th><th>Label</th><th>Ft</th></tr></thead><tbody></tbody></table></div>
+      </details>
+      <details id="saBox" hidden>
+        <summary id="saSum"></summary>
+        <div class="scroll"><table id="sa"><thead><tr><th>Slot</th><th>Airfield</th><th>Label</th><th>Ft</th></tr></thead><tbody></tbody></table></div>
+      </details>
+      <details id="fpBox" hidden>
+        <summary id="fpSum"></summary>
+        <div class="scroll"><table id="fp"><thead><tr><th>Slot</th><th>FARP</th><th>Code</th><th>Ft</th></tr></thead><tbody></tbody></table></div>
+      </details>
+      <details id="afBox" hidden>
+        <summary id="afSum"></summary>
+        <div class="scroll"><table id="af"><thead><tr><th>Slot</th><th>Airfield</th><th>Code</th><th>Ft</th></tr></thead><tbody></tbody></table></div>
+      </details>
+    </section>
+    <div id="settings"></div>
+    <div class="row" id="setbar">
+      <button id="saveDefaults">Save as defaults</button>
+      <button id="resetDefaults" class="ghost">Reset to Grayflag standard</button>
+    </div>
+    <div id="setmsg" class="msg"></div>
+  </aside>
+</main>
+<footer>
+  <details id="local">
+    <summary id="localSum">DCS folder</summary>
+    <div class="row"><input id="dcsDir" size="58" placeholder="C:\\Users\\you\\Saved Games\\DCS"><button id="saveDcs">Use this folder</button></div>
+    <div id="localMsg" class="msg"></div>
+  </details>
+  <details id="harvest">
+    <summary>Advanced: add a scenario from a track</summary>
+    <p class="msg">You should not need this: new servers and changed missions arrive as new versions of the program. It reads the objectives, capture points and airfields out of a track you have flown, in case you want a scenario sooner.</p>
+    <ol class="steps">
+      <li><b>Prepare.</b> Pick a track
+        <select id="hvTrack"></select>
+        <div class="row">
+          <label>id <input id="hvId" size="16" placeholder="pg-redux" list="hvIds"><datalist id="hvIds"></datalist></label>
+          <label>name <input id="hvName" size="22" placeholder="Persian Gulf REDUX"></label>
+          <label>tag <input id="hvTag" size="5" placeholder="PG"></label>
+          <button id="hvPrepare">Prepare mission</button>
+        </div>
+        <label class="inl"><input type="checkbox" id="hvKeep"> keep the server scripts (normally not needed: they are removed so nothing but the harvest runs)</label>
+        <div id="hvMsg1" class="msg"></div></li>
+      <li><b>Run it in DCS.</b> Start the new mission from <i>Missions &rarr; Harvest</i> in single player (any aircraft). The server scripts are removed from this copy, so there should be no script error box. Wait until the mission has started.</li>
+      <li><b>Collect.</b> <button id="hvCollect">Collect results</button> <label class="inl"><input type="checkbox" id="hvForce"> accept it even if it reports problems</label>
+        <div id="hvMsg3" class="msg"></div></li>
+    </ol>
+  </details>
+  <div class="msg" id="aboutLine"></div>
+</footer>
+<script src="/static/app.js"></script>
+</body>
+</html>

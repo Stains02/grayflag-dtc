@@ -1,0 +1,23 @@
+{
+  "id": "ah64d",
+  "enabled": true,
+  "capacity": 49,
+  "first_slot": 51,
+  "label_max_len": 3,
+  "point_type": "control_measure_EU",
+  "point_type_id": 46,
+  "coordinates": "dcs_xy_m",
+  "altitude_unit": "m",
+  "template": "templates/dtc/ah64d.dtc",
+  "dcs_dtc_subfolder": "",
+  "note_mode": "name",
+  "note_max_len": 24,
+  "mission_slot": 1,
+  "soft_capacity": 42,
+  "farp_type_id": 68,
+  "sites_range_nm": 25,
+  "airfield_type_id": 62,
+  "spawns_per_objective": 2,
+  "spawn_range_nm": 60,
+  "sites_default": true
+}

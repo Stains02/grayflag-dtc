@@ -1,0 +1,387 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Grayflag server dataset",
+  "type": "object",
+  "required": [
+    "schema",
+    "server_id",
+    "server_name",
+    "theater",
+    "lanes",
+    "objectives",
+    "airfields"
+  ],
+  "properties": {
+    "schema": {
+      "const": 1,
+      "description": "Format version."
+    },
+    "server_id": {
+      "type": "string"
+    },
+    "server_name": {
+      "type": "string"
+    },
+    "theater": {
+      "type": "string",
+      "description": "DCS terrain name, e.g. PersianGulf, Syria."
+    },
+    "mission_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "harvested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_track": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "File name of the track the data was read from."
+    },
+    "lanes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Lattice letters (Grayflag calls them lattices)."
+    },
+    "objectives": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/objective"
+      }
+    },
+    "airfields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/airfield"
+      }
+    },
+    "anomalies": {
+      "type": "array"
+    },
+    "farps": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/farp"
+      },
+      "description": "Grayflag base / FARP sites (zones of type base)."
+    },
+    "sites": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/site"
+      },
+      "description": "Enemy QRF and supply bases (zones of type qrf and supply)."
+    },
+    "dynamic_spawns": {
+      "type": "array",
+      "description": "Blue bases where helicopters can spawn dynamically, read from the mission's warehouses.",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "types"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "airport",
+              "static"
+            ]
+          },
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "x": {
+            "type": "number"
+          },
+          "y": {
+            "type": "number"
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "xy": {
+      "type": "object",
+      "required": [
+        "x",
+        "y"
+      ],
+      "properties": {
+        "x": {
+          "type": "number",
+          "description": "DCS map x, meters, positive north"
+        },
+        "y": {
+          "type": "number",
+          "description": "DCS map y, meters, positive east"
+        }
+      }
+    },
+    "objective": {
+      "type": "object",
+      "required": [
+        "id",
+        "lane",
+        "seq",
+        "name",
+        "center",
+        "cps"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Zone name in the mission, e.g. OBJA16"
+        },
+        "lane": {
+          "type": "string",
+          "description": "Lattice letter"
+        },
+        "seq": {
+          "type": "integer",
+          "description": "Number within the lattice; the objective is lane+seq, e.g. A16"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name the mission gives the objective (the F10 name)"
+        },
+        "placeholder": {
+          "type": "boolean",
+          "description": "True for the unnamed 'Alpha/Bravo/Charlie/Delta Objective' placeholders"
+        },
+        "center": {
+          "type": "object",
+          "required": [
+            "lat",
+            "lon"
+          ],
+          "properties": {
+            "lat": {
+              "type": "number"
+            },
+            "lon": {
+              "type": "number"
+            }
+          }
+        },
+        "cps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cp"
+          }
+        }
+      }
+    },
+    "cp": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "lat",
+        "lon",
+        "elev_m",
+        "dcs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Zone name, CAP or CAP-<n>"
+        },
+        "name": {
+          "type": "string",
+          "description": "Capture point name; 'capture point' means unnamed"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "elev_m": {
+          "type": "number",
+          "description": "Ground elevation, meters"
+        },
+        "radius_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "shape": {
+          "enum": [
+            "circle",
+            "quad"
+          ]
+        },
+        "dcs": {
+          "$ref": "#/definitions/xy"
+        }
+      }
+    },
+    "airfield": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "lat",
+        "lon",
+        "elev_m",
+        "dcs",
+        "slots"
+      ],
+      "properties": {
+        "id": {
+          "type": [
+            "integer",
+            "string"
+          ],
+          "description": "DCS airbase id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "airdrome",
+            "helipad"
+          ]
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "elev_m": {
+          "type": "number"
+        },
+        "dcs": {
+          "$ref": "#/definitions/xy"
+        },
+        "slots": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "description": "Player-slot aircraft types at this airbase (DCS type name) and how many slots"
+        }
+      }
+    },
+    "farp": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "lane",
+        "avail",
+        "lat",
+        "lon",
+        "elev_m",
+        "dcs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Zone name in the mission"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lane": {
+          "type": "string"
+        },
+        "avail": {
+          "type": "integer",
+          "description": "Objective number of its lattice at which it opens (0 = from the start). The FARP sits at objective avail-1 and opens when that objective is captured, i.e. when the active objective is avail."
+        },
+        "template": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "convoy": {
+          "type": "boolean"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "elev_m": {
+          "type": "number"
+        },
+        "dcs": {
+          "$ref": "#/definitions/xy"
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "lane",
+        "lim",
+        "lat",
+        "lon",
+        "elev_m",
+        "dcs"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "qrf",
+            "supply"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "lane": {
+          "type": "string"
+        },
+        "lim": {
+          "type": "integer",
+          "description": "Objective number it belongs to"
+        },
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "elev_m": {
+          "type": "number"
+        },
+        "dcs": {
+          "$ref": "#/definitions/xy"
+        }
+      }
+    }
+  }
+}

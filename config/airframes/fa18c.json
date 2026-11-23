@@ -1,0 +1,13 @@
+{
+  "id": "fa18c",
+  "enabled": true,
+  "capacity": 58,
+  "label_max_len": 3,
+  "first_wypt": 1,
+  "coordinates": "dcs_xy_m",
+  "altitude_unit": "m",
+  "template": "templates/dtc/fa18c.dtc",
+  "dcs_dtc_subfolder": "",
+  "note_max_len": 24,
+  "sites_range_nm": 25
+}

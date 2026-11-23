@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+build/
+dist/
+*.log
+# your own data next to the shipped datasets (when running from source)
+/data/settings/
+/data/codes/
+/data/names/
+/data/servers.json
+/data/local.json
+/data/theaters/*
+!/data/theaters/pg-redux.json
+!/data/theaters/syria-coin.json
+!/data/theaters/caucasus.json
+!/data/theaters/germany.json
+!/data/theaters/sinai.json

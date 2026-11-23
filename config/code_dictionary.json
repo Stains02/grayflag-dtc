@@ -1,0 +1,9 @@
+{
+  "words": {
+    "NORTH": "N", "SOUTH": "S", "EAST": "E", "WEST": "W",
+    "NORTHEAST": "NE", "NORTHWEST": "NW", "SOUTHEAST": "SE", "SOUTHWEST": "SW",
+    "CENTRAL": "C", "UPPER": "U", "LOWER": "L"
+  },
+  "generic_names": ["capture point"],
+  "digit_fallback": true
+}
